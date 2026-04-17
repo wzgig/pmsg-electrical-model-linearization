@@ -159,7 +159,7 @@ PLL_int = 0;
 % v_g_q = round(eval(v_g_q));
 
 syms omega_m Psi_sq Psi_sd Id_stator_int Iq_stator_int Speed_int...
-    u_sd u_sq U_dc Udc_int i_gd i_gq Id_grid_int Iq_grid_int;
+    u_sd u_sq U_dc Udc_int i_gd i_gq Id_grid_int Iq_grid_int u_gd u_gq;
 syms omega_best i_gqref
 
 Tg_dq_alphabeta = [cos(theta_g) -sin(theta_g); sin(theta_g) cos(theta_g)];
@@ -201,8 +201,8 @@ P_e = Te * omega_m;
 
 i_gdref = Kp_Udc*(U_dc - U_dcref) + Ki_Udc*Udc_int;
 
-u_gd = - Kp_Id_grid*(i_gdref - i_gd) - Ki_Id_grid*Id_grid_int - R_g*i_gd + v_g_d+i_gq*w_g*L_g;
-u_gq = - Kp_Iq_grid*(i_gqref - i_gq) - Ki_Iq_grid*Iq_grid_int - R_g*i_gq + v_g_q-i_gd*w_g*L_g;
+u_gdref = - Kp_Id_grid*(i_gdref - i_gd) - Ki_Id_grid*Id_grid_int - R_g*i_gd + v_g_d+i_gq*w_g*L_g;
+u_gqref = - Kp_Iq_grid*(i_gqref - i_gq) - Ki_Iq_grid*Iq_grid_int - R_g*i_gq + v_g_q-i_gd*w_g*L_g;
 
 P_dc = (u_gd* i_gd + u_gq * i_gq);%(2-17)
 P_g = (v_g_d * i_gd + v_g_q * i_gq);%(2-17)
@@ -224,23 +224,25 @@ eqn13 = i_gdref - i_gd == 0;
 eqn14 = i_gqref - i_gq == 0;
 eqn15 = i_galpha == i_alpha;
 eqn16 = i_gbeta == i_beta;
+eqn17 = (u_gdref - u_gd)/T_d == 0;
+eqn18 = (u_gqref - u_gq)/T_d == 0;
 
 
 [omega_m, Psi_sq, Psi_sd, Id_stator_int, Iq_stator_int, Speed_int,...
     u_sd, u_sq, U_dc, Udc_int, i_gd, i_gq, Id_grid_int, Iq_grid_int,...
-    omega_best, i_gqref]...
+    u_gd, u_gq, omega_best, i_gqref]...
                       = vpasolve(eval([eqn1,eqn2,eqn3,eqn4,eqn5,eqn6, ...
                       eqn7,eqn8,eqn9,eqn10,eqn11,eqn12,eqn13,eqn14, ...
-                      eqn15,eqn16]),...
+                      eqn15,eqn16,eqn17,eqn18]),...
                       [omega_m Psi_sq Psi_sd Id_stator_int Iq_stator_int Speed_int ...
                       u_sd u_sq U_dc Udc_int i_gd i_gq Id_grid_int Iq_grid_int ...
-                      omega_best i_gqref],...
+                      u_gd u_gq omega_best i_gqref],...
                       [-inf,inf;-inf,inf;-inf,inf;-inf,inf;-inf,inf;-inf,inf;-inf,inf;-inf,inf; ...
                       -inf,inf;-inf,inf;-inf,inf;-inf,inf;-inf,inf;-inf,inf; ...
-                      -inf,inf;-inf,inf]);
+                      -inf,inf;-inf,inf;-inf,inf;-inf,inf]);
 
 inistate = [omega_m Psi_sq Psi_sd Id_stator_int Iq_stator_int Speed_int...
-    u_sd u_sq U_dc Udc_int i_gd i_gq Id_grid_int Iq_grid_int PLL_int thetapll]';
+    u_sd u_sq U_dc Udc_int i_gd i_gq Id_grid_int Iq_grid_int PLL_int thetapll u_gd u_gq]';
 
 omega_best = getRealIfSmallImag(omega_best);
 i_gqref = getRealIfSmallImag(i_gqref);
@@ -248,7 +250,7 @@ i_gqref = getRealIfSmallImag(i_gqref);
 state_size = size(inistate,1);
 
 inistate2 = [omega_m Psi_sq Psi_sd Id_stator_int Iq_stator_int Speed_int...
-    u_sd u_sq U_dc Udc_int i_gd i_gq Id_grid_int Iq_grid_int PLL_int thetapll]';
+    u_sd u_sq U_dc Udc_int i_gd i_gq Id_grid_int Iq_grid_int PLL_int thetapll u_gd u_gq]';
 
 
 x_ss = inistate2;  % 稳态状态

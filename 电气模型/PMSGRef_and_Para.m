@@ -57,7 +57,7 @@ v_w = 12;
 %%%%%%%%%% algebra
 % syms omega_m Psi_sq Psi_sd x1 x2 y1 u_sd u_sq xpll thetapll U_dc z1 i_gd i_gq z2 z3;
 syms omega_m Psi_sq Psi_sd Id_stator_int Iq_stator_int Speed_int...
-    u_sd u_sq U_dc Udc_int i_gd i_gq Id_grid_int Iq_grid_int;
+    u_sd u_sq U_dc Udc_int i_gd i_gq Id_grid_int Iq_grid_int u_gd u_gq;
 syms omega_best i_gqref
 
 % omega_best = 8.1*v_w/R_t;%最佳叶尖速比
@@ -95,8 +95,8 @@ P_e = Te * omega_m;
 
 i_gdref = Kp_Udc*(U_dc - U_dcref) + Ki_Udc*Udc_int;
 
-u_gd = - Kp_Id_grid*(i_gdref - i_gd) - Ki_Id_grid*Id_grid_int - R_g*i_gd + v_g_d+i_gq*w_g*L_g;
-u_gq = - Kp_Iq_grid*(i_gqref - i_gq) - Ki_Iq_grid*Iq_grid_int - R_g*i_gq + v_g_q-i_gd*w_g*L_g;
+u_gdref = - Kp_Id_grid*(i_gdref - i_gd) - Ki_Id_grid*Id_grid_int - R_g*i_gd + v_g_d+i_gq*w_g*L_g;
+u_gqref = - Kp_Iq_grid*(i_gqref - i_gq) - Ki_Iq_grid*Iq_grid_int - R_g*i_gq + v_g_q-i_gd*w_g*L_g;
 
 P_dc = (u_gd* i_gd + u_gq * i_gq);%(2-17)
 P_g = (v_g_d * i_gd + v_g_q * i_gq);%(2-17)

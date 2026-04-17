@@ -19,6 +19,8 @@ Iq_grid_int = x(14);
 
 PLL_int   = x(15);
 thetapll  = x(16);
+u_gd      = x(17);
+u_gq      = x(18);
 %%%%%%%%%%%%%%%%%%%%%%%%%%  Paras  %%%%%%%%%%%%%%%%%%%%%%%%
 f    = 60;
 Fnom    = f;
@@ -148,8 +150,8 @@ v_g_q = vg_dq_real(2);         % 网侧q轴电压
 
 i_gdref = Kp_Udc*(U_dc - U_dcref) + Ki_Udc*Udc_int;
 
-u_gd = - Kp_Id_grid*(i_gdref - i_gd) - Ki_Id_grid*Id_grid_int - R_g*i_gd + v_g_d+i_gq*w_g*L_g;
-u_gq = - Kp_Iq_grid*(i_gqref - i_gq) - Ki_Iq_grid*Iq_grid_int - R_g*i_gq + v_g_q-i_gd*w_g*L_g;
+u_gdref = - Kp_Id_grid*(i_gdref - i_gd) - Ki_Id_grid*Id_grid_int - R_g*i_gd + v_g_d+i_gq*w_g*L_g;
+u_gqref = - Kp_Iq_grid*(i_gqref - i_gq) - Ki_Iq_grid*Iq_grid_int - R_g*i_gq + v_g_q-i_gd*w_g*L_g;
 
 P_dc = (u_gd* i_gd + u_gq * i_gq);%(2-17)
 P_g = (v_g_d * i_gd + v_g_q * i_gq);%(2-17)
@@ -173,5 +175,7 @@ Q_g = (v_g_q * i_gd - v_g_d * i_gq);%(2-18)
         i_gqref - i_gq;
         Ki_PLL*(v_g_q/Vbase - ugq_ref);
         PLL_int + Kp_PLL*(v_g_q/Vbase - ugq_ref);
+        (u_gdref - u_gd)/T_d;
+        (u_gqref - u_gq)/T_d;
     ];
 end
