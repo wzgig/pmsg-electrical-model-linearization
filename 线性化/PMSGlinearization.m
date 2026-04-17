@@ -12,11 +12,10 @@ if Generation_Mode == 1
     % Path_root_Results = "Ideal Power Grid_Train"; % 如果想区分文件夹可以取消注释并修改
     
     % 定义参数范围和步长
-    P_range = linspace(-1, -0.3, 20);
-    % P_range = [-0.3, -0.5, -1];
-    Q_range = linspace(-1, 1, 20);
-    % V_range = linspace(0.85, 1.15, 20);
-    xi_range = linspace(-pi/12, pi/12, 20);
+    P_range = linspace(-1, -0.3, 2);
+    Q_range = linspace(-1, 1, 2);
+    V_range = linspace(0.85, 1.15, 2);
+    xi_range = linspace(-pi/12, pi/12, 2);
     % P_range = -1;
     % Q_range = 0;
     % V_range = 1;
@@ -305,6 +304,10 @@ meta.param = struct('P',P,'Q',Q,'V',V,'xi_rad',xi,'xi_deg',xi_deg);
 meta.sizes = struct('n',n,'m',m,'p',p);
 meta.filename = fname;     % 方便从 mat 内部知道它叫什么
 meta.Path_root_Results = Path_root_Results;
+
+if ~exist(Path_root_Results, 'dir')
+    mkdir(Path_root_Results);
+end
 
 filepath = fullfile(Path_root_Results, fname + ".mat");
 % 说明：x_ss/u_ss 是线性化点；thetapll 是稳态 PLL 角（前面解出来的）

@@ -87,8 +87,8 @@ eqn3 = u_sd - R_s*i_sd + omega_e*Psi_sq == 0;
 eqn4 = i_sdref - i_sd == 0;
 eqn5 = i_sqref - i_sq == 0;
 eqn6 = n_ref - n == 0;
-eqn7 = (u_sdref - u_sd)/T_d == 0;
-eqn8 = (u_sqref - u_sq)/T_d == 0;
+eqn7 = (u_sdref * (U_dc / U_dcref) - u_sd)/T_d == 0;
+eqn8 = (u_sqref * (U_dc / U_dcref) - u_sq)/T_d == 0;
 eqn9 = (P_s - P_dc)/(C_dc*U_dc) == 0;
 eqn10 = U_dc - U_dcref == 0;
 eqn11 = (v_g_d - u_gd - R_g*i_gd + w_g*L_g*i_gq)/L_g == 0;
@@ -97,8 +97,8 @@ eqn13 = i_gdref - i_gd == 0;
 eqn14 = i_gqref - i_gq == 0;
 eqn15 = i_galpha == i_alpha;
 eqn16 = i_gbeta == i_beta;
-eqn17 = (u_gdref - u_gd)/T_d == 0;
-eqn18 = (u_gqref - u_gq)/T_d == 0;
+eqn17 = (u_gdref * (U_dc / U_dcref) - u_gd)/T_d == 0;
+eqn18 = (u_gqref * (U_dc / U_dcref) - u_gq)/T_d == 0;
 
 [omega_m, Psi_sq, Psi_sd, Id_stator_int, Iq_stator_int, Speed_int,...
     u_sd, u_sq, U_dc, Udc_int, i_gd, i_gq, Id_grid_int, Iq_grid_int,...
